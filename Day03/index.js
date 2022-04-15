@@ -1,4 +1,6 @@
 const express = require("express");
+const { faker, Faker } = require('@faker-js/faker');
+
 
 const app = express();
 
@@ -8,6 +10,7 @@ const port = process.env.PORT || "3000";
 
 
 const { PrismaClient } = require('@prisma/client');
+const { json } = require("express/lib/response");
 const prisma = new PrismaClient();
 
 
@@ -54,8 +57,16 @@ app.delete("/user/:id", async (req , res) => {
 /************************************************ CRUD FOR PROVINCE*************************************************/
 
 app.post('/province', async (req, res) => {
-  const province = await prisma.province.create({ data: req.body });
-  res.json(province);
+    for(let i=0; i < 10; i++){
+        await prisma.province.create({
+            data: {
+                name:`${faker.address.state()}`,
+                area: `${Math.random().toFixed(5)}`
+            },
+        }),
+    //const province =  prisma.province.create({ data: req.body });
+    res.json(province);
+    }
 });
 
 app.get("/province", async (req , res) => {
@@ -123,7 +134,12 @@ app.post('/city', async (req, res) => {
       res.json(deletedCity);
   });
 
+  /************************************************  *************************************************/
+
 
 app.listen(port, () => {
   console.log(`Server Running at ${port} 🚀`);
 });
+
+
+
