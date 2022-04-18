@@ -22,14 +22,14 @@ const { city, province } = new PrismaClient();
 //         }
 //     });
 
-    if(!provinceExists) {
-        return res.status(400).json({
-            msg: "province not found"
-        })
-    }
-    const city = await city.create({ data: req.body });
-    res.json(city);
-  });
+//     if(!provinceExists) {
+//         return res.status(400).json({
+//             msg: "province not found"
+//         })
+//     }
+//     const currCity = await city.create({ data: req.body });
+//     res.json(currCity);
+//   });
   
   
   router.put("/", async (req , res) => {
