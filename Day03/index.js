@@ -6,136 +6,103 @@ const app = express();
 
 app.use(express.json());
 
+app.use('/api/provinces', require('./contollers/province.controller'))
+app.use('/api/cities', require('./contollers/city.controller'))
+app.use('/api/users', require('./contollers/user.controller'))
+
+//app.use('/api/users', require('./routes/users'))
+
+
 const port = process.env.PORT || "3000";
 
 
-const { PrismaClient } = require('@prisma/client');
-const { json } = require("express/lib/response");
-const prisma = new PrismaClient();
+// const { PrismaClient } = require('@prisma/client');
+// const { json } = require("express/lib/response");
+// const prisma = new PrismaClient();
 
 
-  /************************************************ CRUD FOR USER *************************************************/
+//   /************************************************ CRUD FOR USER *************************************************/
 
-  app.post('/user', async (req, res) => {
-    const user = await prisma.user.create({ data: req.body });
-    res.json(user);
-  });
+//   app.post('/user', async (req, res) => {
+//     const user = await prisma.user.create({ data: req.body });
+//     res.json(user);
+//   });
   
-  app.get("/user", async (req , res) => {
-      const user = await prisma.user.findMany();
-      res.json(user);
-  });
+//   app.get("/user", async (req , res) => {
+//       const user = await prisma.user.findMany();
+//       res.json(user);
+//   });
 
-  app.put("/user", async (req , res) => {
-    const {id, name, age, gender, cityId} = req.body;
-    const updatedUser = await prisma.city.update({
-        where: {
-            id: id
-        },
-        data: {
-            name: name,
-            age: age,
-            gender: gender,
-            cityId: cityId
-        }
-    });
-    res.json(updatedUser);
-});
+//   app.put("/user", async (req , res) => {
+//     const {id, name, age, gender, cityId} = req.body;
+//     const updatedUser = await prisma.city.update({
+//         where: {
+//             id: id
+//         },
+//         data: {
+//             name: name,
+//             age: age,
+//             gender: gender,
+//             cityId: cityId
+//         }
+//     });
+//     res.json(updatedUser);
+// });
 
-app.delete("/user/:id", async (req , res) => {
-    const id = req.params.id;
-    const deletedUser = await prisma.city.delete({
-        where: {
-            id: id,
-        },
-    });
-    res.json(deletedUser);
-});
+// app.delete("/user/:id", async (req , res) => {
+//     const id = req.params.id;
+//     const deletedUser = await prisma.city.delete({
+//         where: {
+//             id: id,
+//         },
+//     });
+//     res.json(deletedUser);
+// });
 
 
 
-/************************************************ CRUD FOR PROVINCE*************************************************/
+// /************************************************ CRUD FOR PROVINCE*************************************************/
 
-app.post('/province', async (req, res) => {
-    for(let i=0; i < 10; i++){
-        await prisma.province.create({
-            data: {
-                name:`${faker.address.state()}`,
-                area: `${Math.random().toFixed(5)}`
-            },
-        }),
-    //const province =  prisma.province.create({ data: req.body });
-    res.json(province);
-    }
-});
 
-app.get("/province", async (req , res) => {
-    const provinces = await prisma.province.findMany();
-    res.json(provinces);
-});
+// /************************************************ CRUD FOR CITY *************************************************/
 
-app.put("/province", async (req , res) => {
-    const {id, name, area} = req.body;
-    const updatedProvince = await prisma.province.update({
-        where: {
-            id: id
-        },
-        data: {
-            name: name,
-            area: area
-        }
-    });
-    res.json(updatedProvince);
-});
 
-app.delete("/province/:id", async (req , res) => {
-    const id = req.params.id;
-    const deletedProvince = await prisma.province.delete({
-        where: {
-            id: id,
-        },
-    });
-    res.json(deletedProvince);
-});
 
-/************************************************ CRUD FOR CITY *************************************************/
+//   /************************************************  GET Users by provinceId *************************************************/
 
-app.post('/city', async (req, res) => {
-    const city = await prisma.city.create({ data: req.body });
-    res.json(city);
-  });
-  
-  app.get("/city", async (req , res) => {
-      const city = await prisma.city.findMany();
-      res.json(city);
-  });
-  
-  app.put("/city", async (req , res) => {
-      const {id, name, provinceId} = req.body;
-      const updatedCity = await prisma.city.update({
-          where: {
-              id: id
-          },
-          data: {
-              name: name,
-              provinceId: provinceId
-          }
-      });
-      res.json(updatedCity);
-  });
-  
-  app.delete("/city/:id", async (req , res) => {
-      const id = req.params.id;
-      const deletedCity = await prisma.city.delete({
-          where: {
-              id: id,
-          },
-      });
-      res.json(deletedCity);
-  });
+//   app.get("/user/:provinceId", async (req , res) => {
+//     const provinceId = req.params.provinceId;
+//     const user = await prisma.user.findMany({
+//             where: {
+//             city: {
+//                     province: {
+//                             id: {
+//                                 equals: provinceId,
+//                             }
+//                         }
+//                     }
+//                 }
+//     });
+//     res.json(user);
+// });
 
-  /************************************************  *************************************************/
+  /************************************************  GET Users by province Name *************************************************/
 
+//   app.get("/user/search/:provinceName", async (req , res) => {
+//     const provinceName = req.params.provinceName;
+//     const user = await prisma.user.findMany({
+//             where: {
+//             city: {
+//                     province: {
+//                             name: {
+//                                 equals: provinceName,
+//                             }
+//                         }
+//                     }
+//                 }
+//     });
+//     res.json(user);
+// });
 
 app.listen(port, () => {
   console.log(`Server Running at ${port} 🚀`);
