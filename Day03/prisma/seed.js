@@ -2,6 +2,8 @@ import faker from '@faker-js/faker';
 import pkg from '@prisma/client';
 const {PrismaClient} = pkg;
 
+// TODO: Always add   "type": "module", to package.json before seeding data
+
 //================ ??????????  IMPORT DID NOT WORK FROM USER   ???????????   =================
 //import { seedUser } from './seedFolder/seedUser.js';
 
@@ -17,9 +19,29 @@ const prisma = new PrismaClient();
    // seedUser();
 
    // *************************** Temporary way to get unique province name ******************
-    // for(let i=0; i < 2 ; i++){
-    //     let flag = true;
-    //     let newProvinceName = ""
+
+        //       **********************************************     solution 01 (UNIQUE Province NAME)     **********************************************
+        const provinceList = await prisma.province.findMany({
+        select: {
+            name: true,
+        }
+    });
+    //console.log(cityList);
+
+
+    var arrayOfProvinceName = [];
+
+    provinceList.forEach(element => {
+        arrayOfProvinceName.push(element.name);
+    });
+    console.log(arrayOfProvinceName);
+
+
+
+    for(let i=0; i < 2 ; i++){
+        let flag = true;
+        let newProvinceName = ""
+        //       **********************************************     solution 02      **********************************************
     //     while(flag){
     //     newProvinceName = faker.address.state();
     //     console.log(newProvinceName);
@@ -33,19 +55,20 @@ const prisma = new PrismaClient();
 
     //     }
     // }
-    //     await prisma.province.create({
-    //         data: {
-    //             name: newProvinceName,                  
-    //             area: faker.datatype.number(100)
-    //         }
-    //     })
+    
+        await prisma.province.create({
+            data: {
+                name: newProvinceName,                  
+                area: faker.datatype.number(100)
+            }
+        })
 
-    // }
+    }
 
     //************************************** SEED City *************************************/
 
     // Solution 01 for having unique city name
-    // for(let i=0; i < 2 ; i++){
+    // 
     //     let flag = true;
     //     let newCityName = ""
     //     while(flag){
@@ -126,33 +149,33 @@ const prisma = new PrismaClient();
         //************************************** SEED User *************************************/
 
 
-    //     const listOfCities = await prisma.city.findMany({
-    //         select: {
-    //             id: true,
-    //         }
-    //     });
-    //     console.log(listOfCities);
+        const listOfCities = await prisma.city.findMany({
+            select: {
+                id: true,
+            }
+        });
+        console.log(listOfCities);
     
     
-    //     var arrayOfCityId = [];
+        var arrayOfCityId = [];
     
-    //     listOfCities.forEach(element => {
-    //         arrayOfCityId.push(element.id);
-    //     });
-    //     console.log(arrayOfCityId);
+        listOfCities.forEach(element => {
+            arrayOfCityId.push(element.id);
+        });
+        console.log(arrayOfCityId);
         
-    //     const arrayOfGender = ["FEMALE", "MALE", "NONE"]
+        const arrayOfGender = ["FEMALE", "MALE", "NONE"]
     
-    //     for (let i=0; i<5; i++){
-    //                 await prisma.user.create({
-    //             data: {
-    //                 name:`${faker.name.findName()}`,
-    //                 age: faker.datatype.number(100).toString(),
-    //                 gender: arrayOfGender[Math.floor(Math.random()*arrayOfGender.length)] , 
-    //                 cityId: arrayOfCityId[Math.floor(Math.random()*arrayOfCityId.length)]          //provinceId: province.id
-    //             }
-    //         })
-    // }
+        for (let i=0; i<5; i++){
+                    await prisma.user.create({
+                data: {
+                    name:`${faker.name.findName()}`,
+                    age: faker.datatype.number(100).toString(),
+                    gender: arrayOfGender[Math.floor(Math.random()*arrayOfGender.length)] , 
+                    cityId: arrayOfCityId[Math.floor(Math.random()*arrayOfCityId.length)]          //provinceId: province.id
+                }
+            })
+    }
  }
   main().catch(e => {
     console.error(e);
