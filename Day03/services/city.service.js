@@ -4,28 +4,7 @@ const {  city, province } = new PrismaClient();
 
 
 const createCity = async (newCit) => {
-    // let provinceExists = await province.findUnique({
-    //     where: {
-    //         id: newCit.provinceId
-    //     }
-    // });
 
-    // if(!provinceExists) {
-    //     return res.status(400).json({
-    //         msg: "province not found"
-    //     })
-    // }
-    // let cityExists = await city.findUnique({
-    //     where: {
-    //         name: newCit.name
-    //     }
-    // });
-
-    // if(cityExists) {
-    //     return res.status(400).json({
-    //         msg: "This city already exist"
-    //     })
-    // }
     const newCity = await city.create({ data: newCit });
     console.log(newCity);
     return newCity;

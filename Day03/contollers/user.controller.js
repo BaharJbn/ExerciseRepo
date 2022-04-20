@@ -1,6 +1,8 @@
 //const router = require('express').Router();
 const {createUser, getAllUsers, getUserById, updateUser, deleteUser, getUsersOfProvinceById, getUsersOfProvinceByName} = require('../services/user.service')
-
+const {PrismaClient} = require('@prisma/client');
+const { userSchema } = require('../validations/validation.user');
+const {user} = new PrismaClient();
 
 // router.post('/', async (req, res) => {
 //     try{
@@ -12,12 +14,14 @@ const {createUser, getAllUsers, getUserById, updateUser, deleteUser, getUsersOfP
 //   });
 
    const createUserController = async(req, res) => {
-           try{
-        const result = await createUser(req.body);      
-        res.json(result);
-    }catch(err){
-        res.json(err);
-    }
+        try{
+                const validatedResult = await userSchema.validateAsync(req.body);
+                console.log(validatedResult);
+                const result = await createUser(validatedResult);      
+                res.json(result);
+        }catch(err){
+                res.json(err.message);
+        }
    }
 
 
