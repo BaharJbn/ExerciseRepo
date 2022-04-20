@@ -6,9 +6,9 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/api/provinces', require('./contollers/province.controller'))
-app.use('/api/cities', require('./contollers/city.controller'))
-app.use('/api/users', require('./contollers/user.controller'))
+app.use('/api/provinces', require('./routes/provinces'))
+app.use('/api/cities', require('./routes/cities'))
+app.use('/api/users', require('./routes/users'))
 
 //app.use('/api/users', require('./routes/users'))
 

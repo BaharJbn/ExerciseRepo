@@ -4,18 +4,19 @@ const {  province } = new PrismaClient();
 
 
 const createProvince = async (newProv) => {
-    const exists = await province.findUnique({
-        where: {
-            name: newProv.name,
-        }
-    })
-    if(exists){
-        return "Error: There is already a province with this name! try again";
-    }
+    // // const exists = await province.findUnique({
+    // //     where: {
+    // //         name: newProv.name,
+    // //     }
+    // // })
+    // if(exists){
+    //     return "Error: There is already a province with this name! try again";
+    // }
     const newProvince = await province.create({ data: newProv });
     console.log(newProvince);
     return newProvince;
 }
+
 
 
 const getAllProvinces = async (listOfProvinces) => {

@@ -1,8 +1,17 @@
 const router = require('express').Router();
-const { PrismaClient } = require('@prisma/client');
-const { city, province } = new PrismaClient();
+const {
+    createCityController, 
+    getAllCitiesController, 
+    getCityByIdController, 
+    updateCityController, 
+    deleteCityController} = require('../contollers/city.controller')
 
 
+router.get('/', getAllCitiesController);
+router.get("/:id", getCityByIdController);
+router.post("/", createCityController);
+router.put('/:id', updateCityController);
+router.delete('/:id', deleteCityController)
 
 // router.get("/", async (req , res) => {
 //     try{
@@ -32,28 +41,28 @@ const { city, province } = new PrismaClient();
 //   });
   
   
-  router.put("/", async (req , res) => {
-      const {id, name, provinceId} = req.body;
-      const updatedCity = await city.update({
-          where: {
-              id: id
-          },
-          data: {
-              name: name,
-              provinceId: provinceId
-          }
-      });
-      res.json(updatedCity);
-  });
+//   router.put("/", async (req , res) => {
+//       const {id, name, provinceId} = req.body;
+//       const updatedCity = await city.update({
+//           where: {
+//               id: id
+//           },
+//           data: {
+//               name: name,
+//               provinceId: provinceId
+//           }
+//       });
+//       res.json(updatedCity);
+//   });
   
-  router.delete("/:id", async (req , res) => {
-      const id = req.params.id;
-      const deletedCity = await city.delete({
-          where: {
-              id: id,
-          },
-      });
-      res.json(deletedCity);
-  });
+//   router.delete("/:id", async (req , res) => {
+//       const id = req.params.id;
+//       const deletedCity = await city.delete({
+//           where: {
+//               id: id,
+//           },
+//       });
+//       res.json(deletedCity);
+//   });
 
   module.exports = router

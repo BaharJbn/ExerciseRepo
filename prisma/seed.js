@@ -21,9 +21,6 @@ const prisma = new PrismaClient();
    // *************************** Temporary way to get unique province name ******************
 
         //       **********************************************     solution 01 (UNIQUE Province NAME)     **********************************************
-
-
-    for(let i=0; i < 10 ; i++){
         const provinceList = await prisma.province.findMany({
         select: {
             name: true,
@@ -39,15 +36,11 @@ const prisma = new PrismaClient();
     });
     console.log(arrayOfProvinceName);
 
+
+
+    for(let i=0; i < 10 ; i++){
         let flag = true;
         let newProvinceName = ""
-        while(flag){
-            newProvinceName = faker.address.state();
-        console.log(newProvinceName);
-        if (!arrayOfProvinceName.includes(newProvinceName)){
-            flag = false;
-        }
-    }
         //       **********************************************     solution 02      **********************************************
     //     while(flag){
     //     newProvinceName = faker.address.state();
