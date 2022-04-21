@@ -1,24 +1,32 @@
 const {createCity, getAllCities, getCityById, updateCity, deleteCity} = require('../services/city.service');
 const { citySchema } = require('../validations/validation.city');
 const { PrismaClient } = require('@prisma/client');
-const {  city } = new PrismaClient();
+const { provinceSchema } = require('../validations/validation.province');
+const {  city, province } = new PrismaClient();
 
 
   const createCityController = async (req,res) => {
       try{
           const result = await citySchema.validateAsync(req.body);
           console.log(result);
-      //     const doesExist = await city.findUnique({where:
-      //         {
-      //             name: result.name,
-      //         }}) 
-      // if(doesExist){
-      //     throw Error("This city already exist in system");
-      // }
+          const doesExist = await city.findFirst({where:
+              {
+                  name: result.name,
+              }}) 
+      if(doesExist){
+          throw Error("This city already exist in system");
+      }
+      const provExist = await province.findFirst({where:{
+          id: req.body.provinceId
+      }})
+    if(!provExist){
+          throw Error("The province chosen for city, does not exit");
+      }
         const result2 = await createCity(result);      
         res.json(result2);
     }catch(err){
         if(err.message == "This city already exist in system") {res.status(403);}
+        if(err.message == "The province chosen for city, does not exit") {res.status(403);}
         res.json(err.message);
     }
   }
@@ -34,9 +42,13 @@ const {  city } = new PrismaClient();
 
 
   const getCityByIdController = async(req,res) => {
-          try{
-        const currCity = await getCityById(req.params.id);     
+    try{
+        const currCity = await getCityById(req.params.id); 
+        if (!currCity){
+            res.json(`There is no city with id: ${req.params.id} in the list`);
+        }else{    
         res.json(currCity);
+        }
     }catch(err){
         res.json(err);
     }
@@ -45,10 +57,21 @@ const {  city } = new PrismaClient();
 
   const updateCityController = async (req,res) => {
     try{
-        const updatedCity = await updateCity(req.params.id, req.body);      
+        const validatedCity = await citySchema.validateAsync(req.body);
+        console.log(validatedCity);
+
+        const provExist = await province.findFirst({where:{
+          id: req.body.provinceId
+        }})
+        if(!provExist){
+          throw Error("The province chosen for city, does not exit");
+        }
+
+        const updatedCity = await updateCity(req.params.id, validatedCity);      
         res.json(updatedCity);
     }catch(err){
-        res.json(err);
+        if (err.message == "The province chosen for city, does not exit") res.status(403);
+        res.json(err.message);
     }
   }
 

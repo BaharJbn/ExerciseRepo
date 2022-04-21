@@ -37,14 +37,14 @@ const getProvinceById = async (provinceId, currProvince) => {
 }
 
 const updateProvince = async (provinceId, updatedProvince) => {
-    const exists = await province.findUnique({
-        where: {
-            name: updateProvince.name,
-        }
-    })
-    if(exists){
-        return "Error: There is already a province with this name! try again";
-    }
+    // const exists = await province.findUnique({
+    //     where: {
+    //         name: updateProvince.name,
+    //     }
+    // })
+    // if(exists){
+    //     return "Error: There is already a province with this name! try again";
+    // }
     
     //const { name} = updatedProvince;
     updatedProvince = await province.update({

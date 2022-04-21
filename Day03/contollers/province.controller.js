@@ -80,11 +80,27 @@ const {  province } = new PrismaClient();
 //   });
 
   const updateProvinceController = async(req, res) => {
-   try{
-        const updatedProvince = await updateProvince(req.params.id, req.body);      
-        res.json(updatedProvince);
+
+    try{
+          const updateResult = await provinceSchema.validateAsync(req.body);
+          console.log(updateResult);
+          const doesExist = await province.findFirst({where:
+          {
+            name: updateResult.name,
+            id: {
+              not: req.params.id,
+            }
+          }
+          
+        }) 
+          if(doesExist){
+              throw Error("This Province name already exist in system");
+          }
+            const updatedProvince = await updateProvince(req.params.id, updateResult);      
+            res.json(updatedProvince);
     }catch(err){
-        res.json(err);
+        if(err.message == "This Province name already exist in system") res.status(403);
+        res.json(err.message);
     }
   }
 
