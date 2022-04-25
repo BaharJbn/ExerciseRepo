@@ -4,10 +4,19 @@ const { PrismaClient } = require('@prisma/client');
 const { provinceSchema } = require('../validations/validation.province');
 const {  city, province } = new PrismaClient();
 
+const Joi = require('@hapi/joi');
+
+// const citySchema = Joi.object({
+//     name: Joi.string().alphanum().min(2).max(50).required(),
+//     provinceId: Joi.string().required(),
+// })
 
   const createCityController = async (req,res) => {
       try{
-          const result = await citySchema.validateAsync(req.body);
+          const result = await Joi.object({
+            name: Joi.string().alphanum().min(2).max(50).required(),
+            provinceId: Joi.string().required(),
+            }).validateAsync(req.body);
           console.log(result);
           const doesExist = await city.findFirst({where:
               {

@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const { PrismaClientKnownRequestError } = require('@prisma/client/runtime');
 const {  province } = new PrismaClient();
+const ApiError = require('../errorHandling/ApiError');
 
 
 const createProvince = async (newProv) => {
@@ -74,7 +75,27 @@ const deleteProvince = async (provinceId, deletedProvince) => {
     //}
 }
 
+const checkProvinceAlreadyExist = async (provinceName) => {
+    existProvince = await province.findUnique({
+        where: {
+            name: provinceName
+        }
+    });
+    console.log(existProvince)
+    if(existProvince){
+    return true;
+    }
+    else{
+        return false;
+    }
+    // if(existProvince){
+    //     return ApiError.badRequest("This province already exist. Please try another entry!");
+    // }else{
+    //     return null;
+    // }
+}
 
 
 
-module.exports = {createProvince, getAllProvinces, getProvinceById, updateProvince, deleteProvince};
+
+module.exports = {createProvince, getAllProvinces, getProvinceById, updateProvince, deleteProvince, checkProvinceAlreadyExist};

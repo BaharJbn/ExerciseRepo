@@ -1,5 +1,6 @@
 const express = require("express");
 const { faker, Faker } = require('@faker-js/faker');
+const apiErrorHandler = require('./errorHandling/api-error-handler');
 
 
 const app = express();
@@ -103,6 +104,8 @@ const port = process.env.PORT || "3000";
 //     });
 //     res.json(user);
 // });
+
+app.use(apiErrorHandler);
 
 app.listen(port, () => {
   console.log(`Server Running at ${port} 🚀`);
