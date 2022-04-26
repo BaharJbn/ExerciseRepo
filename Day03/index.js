@@ -3,7 +3,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const { faker, Faker } = require('@faker-js/faker');
 const apiErrorHandler = require('./errorHandling/api-error-handler');
-const apiResponseHandler = require("./contollers/responseHandling/api-res-handler");
+const apiResponseHandler = require("./responseHandling/api-res-handler");
 
 
 const app = express();

@@ -5,7 +5,7 @@ const {createProvince, getAllProvinces, getProvinceById, updateProvince, deleteP
 const { provinceSchema} = require('../validations/validation.province')
 const { PrismaClient } = require('@prisma/client');
 const ApiError = require('../errorHandling/ApiError');
-const ApiResponse = require('./responseHandling/ApiResponse');
+const ApiResponse = require('../responseHandling/ApiResponse');
 const {  province } = new PrismaClient();
 
 
