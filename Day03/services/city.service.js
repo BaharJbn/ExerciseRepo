@@ -28,6 +28,21 @@ const getCityById = async (cityId, currCity) => {
     return currCity;
 }
 
+const existCityByName = async (cityName) => {
+
+    currCity = await city.findFirst({
+        where: {
+            name: cityName
+        }
+    });
+    if(currCity == null){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
 const updateCity = async (cityId, updatedCity) => {
     //const { name, age, gender} = updatedCity;
     updatedCity = await city.update({
@@ -60,4 +75,4 @@ const deleteCity = async (cityId, deletedCity) => {
 
 
 
-module.exports = {createCity, getAllCities, getCityById, updateCity, deleteCity};
+module.exports = {createCity, getAllCities, getCityById, updateCity, deleteCity, existCityByName};

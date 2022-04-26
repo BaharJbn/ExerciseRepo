@@ -1,11 +1,21 @@
 const express = require("express");
+const helmet = require('helmet');
+const morgan = require('morgan');
 const { faker, Faker } = require('@faker-js/faker');
 const apiErrorHandler = require('./errorHandling/api-error-handler');
+const apiResponseHandler = require("./contollers/responseHandling/api-res-handler");
 
 
 const app = express();
 
 app.use(express.json());
+// Not to reveal our tech stack to hackers
+// helmet changes headers to hide out stack 
+//app.use(helmet());
+// a thrid-party middleware ... morgan is a logger 
+// it logs information about every request (dev - tiny - small ) -> these logs different info
+app.use(morgan('dev'));
+
 
 app.use('/api/provinces', require('./routes/provinces'))
 app.use('/api/cities', require('./routes/cities'))
@@ -106,7 +116,7 @@ const port = process.env.PORT || "3000";
 // });
 
 app.use(apiErrorHandler);
-
+//app.use(apiResponseHandler);
 app.listen(port, () => {
   console.log(`Server Running at ${port} 🚀`);
 });
