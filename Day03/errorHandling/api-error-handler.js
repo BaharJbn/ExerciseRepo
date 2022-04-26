@@ -11,8 +11,8 @@ function apiErrorHandler(err, req, res, next) {
         // you should not forget return!
         return;
     }
-    //res.status(500).json("something went wrong");
-    next(res);
+    res.status(500).json("something went wrong");
+    //next(res);
 }
 
 module.exports = apiErrorHandler;
