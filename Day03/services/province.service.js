@@ -5,15 +5,16 @@ const ApiError = require('../errorHandling/ApiError');
 
 
 const createProvince = async (newProv) => {
-    // // const exists = await province.findUnique({
-    // //     where: {
-    // //         name: newProv.name,
-    // //     }
-    // // })
-    // if(exists){
-    //     return "Error: There is already a province with this name! try again";
-    // }
-    const newProvince = await province.create({ data: newProv });
+    const newProvince = await province.create({ 
+        data: {
+            name: newProv.name,
+            area: newProv.area,
+            cities: {
+                create:
+                    newProv.cities
+            } 
+        } 
+    });
     console.log(newProvince);
     return newProvince;
 }
@@ -22,7 +23,11 @@ const createProvince = async (newProv) => {
 
 const getAllProvinces = async (listOfProvinces) => {
 
-    listOfProvinces = await province.findMany();
+    listOfProvinces = await province.findMany({
+        include: {
+            cities: true,
+        },
+});
     return listOfProvinces;
 }
 
@@ -32,7 +37,10 @@ const getProvinceById = async (provinceId, currProvince) => {
     currProvince = await province.findUnique({
         where: {
             id: provinceId
-        }
+        },
+        include: {
+            cities: true,
+        },
     });
     return currProvince;
 }

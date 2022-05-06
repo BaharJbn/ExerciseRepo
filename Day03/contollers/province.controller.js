@@ -13,7 +13,8 @@ const {  province } = new PrismaClient();
 
     const result = (Joi.object().keys({ 
     name: Joi.string().min(2).max(100).required(), 
-    area: Joi.number().min(1).max(2000).required() 
+    area: Joi.number().min(1).max(2000).required(),
+    cities: Joi.array() 
   })).validate(req.body);
 
   const { value, error } = result; 
