@@ -18,11 +18,10 @@ model Province {
 }
 
 model City {
-  id         String   @id @default(uuid())
-  name       String
-  province   Province @relation(fields: [provinceId], references: [id])
-  provinceId String
-  users      User[]
+  id        String     @id @default(uuid())
+  name      String
+  provinces Province[]
+  users     User[]
 }
 
 model User {
